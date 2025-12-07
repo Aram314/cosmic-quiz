@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a1a;
+  --foreground: #e8e8f0;
+  --card-bg: rgba(20, 20, 40, 0.8);
+  --card-border: rgba(100, 100, 180, 0.3);
+  --accent: #7c3aed;
+  --accent-glow: rgba(124, 58, 237, 0.4);
+  --correct: #10b981;
+  --correct-glow: rgba(16, 185, 129, 0.3);
+  --wrong: #ef4444;
+  --wrong-glow: rgba(239, 68, 68, 0.3);
 }
 
 @theme inline {
@@ -12,15 +20,187 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #0a0a1a;
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background gradient layer */
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0f0f2a 100%);
+  z-index: 0;
+}
+
+/* Parallax Stars Container */
+.parallax-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Star layers with different sizes and speeds */
+.stars-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+}
+
+.stars-small {
+  background-image: 
+    radial-gradient(1px 1px at 100px 50px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 200px 150px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 300px 75px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 400px 200px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 500px 100px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 600px 250px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 700px 50px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 800px 175px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 150px 300px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 350px 350px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 550px 400px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 750px 320px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 50px 450px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 250px 500px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 450px 480px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 650px 520px, rgba(255,255,255,0.6), transparent);
+  background-size: 900px 600px;
+  background-repeat: repeat;
+  animation: twinkle-slow 6s ease-in-out infinite alternate;
+}
+
+.stars-medium {
+  background-image: 
+    radial-gradient(2px 2px at 50px 100px, rgba(200,220,255,1), transparent),
+    radial-gradient(2px 2px at 180px 250px, rgba(255,200,200,0.9), transparent),
+    radial-gradient(2px 2px at 320px 80px, rgba(200,255,220,1), transparent),
+    radial-gradient(2px 2px at 480px 300px, rgba(255,255,200,0.9), transparent),
+    radial-gradient(2px 2px at 620px 150px, rgba(220,200,255,1), transparent),
+    radial-gradient(2px 2px at 780px 280px, rgba(200,255,255,0.9), transparent),
+    radial-gradient(2px 2px at 100px 400px, rgba(255,220,200,1), transparent),
+    radial-gradient(2px 2px at 280px 450px, rgba(200,200,255,0.9), transparent),
+    radial-gradient(2px 2px at 420px 380px, rgba(255,200,255,1), transparent),
+    radial-gradient(2px 2px at 580px 500px, rgba(200,255,200,0.9), transparent),
+    radial-gradient(2px 2px at 720px 420px, rgba(255,255,220,1), transparent),
+    radial-gradient(2px 2px at 860px 480px, rgba(220,255,255,0.9), transparent);
+  background-size: 1000px 550px;
+  background-repeat: repeat;
+  animation: twinkle-medium 4s ease-in-out infinite alternate;
+}
+
+.stars-large {
+  background-image: 
+    radial-gradient(3px 3px at 120px 180px, rgba(255,255,255,1), transparent),
+    radial-gradient(3px 3px at 380px 120px, rgba(200,220,255,1), transparent),
+    radial-gradient(3px 3px at 620px 350px, rgba(255,240,200,1), transparent),
+    radial-gradient(3px 3px at 850px 200px, rgba(200,255,255,1), transparent),
+    radial-gradient(3px 3px at 200px 450px, rgba(255,200,220,1), transparent),
+    radial-gradient(3px 3px at 500px 520px, rgba(220,255,200,1), transparent),
+    radial-gradient(4px 4px at 720px 80px, rgba(255,255,255,1), transparent),
+    radial-gradient(4px 4px at 300px 300px, rgba(200,200,255,1), transparent);
+  background-size: 1100px 650px;
+  background-repeat: repeat;
+  animation: twinkle-fast 3s ease-in-out infinite alternate;
+}
+
+/* Shooting stars */
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,0));
+  border-radius: 50%;
+  animation: shoot 8s ease-in-out infinite;
+  opacity: 0;
+}
+
+.shooting-star:nth-child(4) {
+  top: 20%;
+  left: 80%;
+  animation-delay: 0s;
+}
+
+.shooting-star:nth-child(5) {
+  top: 40%;
+  left: 60%;
+  animation-delay: 3s;
+}
+
+.shooting-star:nth-child(6) {
+  top: 10%;
+  left: 30%;
+  animation-delay: 6s;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  15% {
+    transform: translateX(-300px) translateY(300px) rotate(-45deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle-slow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes twinkle-medium {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes twinkle-fast {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 20, 40, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
 }
